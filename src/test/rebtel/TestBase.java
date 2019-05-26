@@ -1,6 +1,7 @@
 package rebtel;
 
-import org.junit.AfterClass;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -12,19 +13,25 @@ public class TestBase {
 
     protected static WebDriver driver;
     protected static WebDriverWait wait;
-   
+    private static String REBTEL_HOME = "https://rebtel.com";
+    
 	@BeforeClass
 	public static void setUp() throws Exception {
 		System.setProperty("webdriver.chrome.driver","src/resources/chromedriver");
+	}
+		
+	@Before
+	public void beforeTest() {
 		driver = new ChromeDriver(getChromeOptions());
 		wait = new WebDriverWait(driver, 10);
+		driver.navigate().to(REBTEL_HOME);
 	}
 	
-	@AfterClass
-	public static void tearDown() throws Exception {
-		//driver.quit();
+	@After
+	public void afterTest() {
+		driver.quit();
 	}
-
+	
 	
 	public static ChromeOptions getChromeOptions() {
 		return new ChromeOptions();

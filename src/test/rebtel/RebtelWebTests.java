@@ -6,14 +6,16 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.junit.runners.Parameterized.Parameters;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 
+@RunWith(Parameterized.class)
 public class RebtelWebTests extends TestBase {
-	
-	private static String URL = "https://rebtel.com";
 	
 	private static String SEARCH_INPUT_FIELD_ID = "rate-search-light";
 	private static String PRODUCT_UNLIMITED_ID = "product-unlimited";
@@ -35,22 +37,33 @@ public class RebtelWebTests extends TestBase {
 	private static String LOGIN_PHONE = "702808112";
 	private static String LOGIN_PASSWORD = "2667";
 	
-	List<String> currency = Arrays.asList("EUR", "USD", "PLN","AUD","GBP");
+	@Parameters
+    public static List<String> data() {
+        return Arrays.asList("EUR", "USD", "PLN","AUD","GBP");
+    }
 	
-	@Test
-	public void openRebtelPage() {
-		driver.navigate().to(URL);
-		
-		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(COOKIE_CONSENT_BUTTON_XPATH)));
-		setCurrency(currency.get(0));				
-		
+	private final String currency;
+	
+    public RebtelWebTests(String currency) {
+		this.currency = currency;
+	}
+    
+    @Test
+    public void testPurchaseFlowForDifferentCurrencies() {
+    	setCurrency(currency);
+		testPurchaseFlow();
+    }
+	
+	public void testPurchaseFlow() {
 		// Wait for search input box to be ready
-		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(SEARCH_INPUT_FIELD_ID)));
+		wait.until(ExpectedConditions.elementToBeClickable(By.id(SEARCH_INPUT_FIELD_ID)));
 		
 		// Get search input box
-		WebElement searchInputElement =  driver.findElement(By.id(SEARCH_INPUT_FIELD_ID));
+		WebElement searchInputElement = driver.findElement(By.id(SEARCH_INPUT_FIELD_ID));
 		
 		// Input search term and press Enter
+		searchInputElement.clear();
+		searchInputElement.click();
 		searchInputElement.sendKeys(TEXT_INPUT);
 		searchInputElement.sendKeys(Keys.ENTER);
 		
@@ -81,6 +94,8 @@ public class RebtelWebTests extends TestBase {
 		WebElement priceElementCartPage = driver.findElement(By.xpath(CART_PRODUCT_PRICE_XPATH));
 		
 		String priceInCartPage = getPrice(priceElementCartPage.getText());
+		
+		System.out.println("priceInCartPage ==>" + priceInCartPage);
 		
 		assertEquals(priceInSearchPage, priceInCartPage);
 		
@@ -116,14 +131,18 @@ public class RebtelWebTests extends TestBase {
 		
 		String priceInCartPageAfterLogin = getPrice(priceElementCartPage.getText());
 		
-		assertEquals(priceInCartPage, priceInCartPageAfterLogin); 
+		System.out.println("priceInCartPageAfterLogin ==>" + priceInCartPageAfterLogin);
+		
+		assertEquals(priceInCartPage, priceInCartPageAfterLogin);
 	}
 	
 	public void setCurrency(String currencyCode) {
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(COOKIE_CONSENT_BUTTON_XPATH)));		
 		
 		driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
 		
 		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(COOKIE_CONSENT_BUTTON_XPATH)));
+			
 		WebElement cookiePolicyCloseButton = driver.findElement(By.xpath(COOKIE_CONSENT_BUTTON_XPATH));
 		cookiePolicyCloseButton.click();
 		
