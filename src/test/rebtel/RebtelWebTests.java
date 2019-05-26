@@ -1,12 +1,15 @@
 package rebtel;
 
 import static org.junit.Assert.assertEquals;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class RebtelWebTests extends TestBase {
 	
@@ -22,19 +25,26 @@ public class RebtelWebTests extends TestBase {
 	private static String CART_PHONE_INPUT_ID = "phone";
 	private static String CART_PASSWORD_INPUT_ID = "password";
 	private static String CART_LOGIN_BUTTON_ID = "button-login";
+	private static String CURRENCY_DROPDOWN_ID = "currency_drop";
 	
 	private static String CART_PRODUCT_PRICE_XPATH = "//*[@id=\"basket-content\"]/ul/div/li[1]/span[2]";
+	private static String COOKIE_CONSENT_BUTTON_XPATH = "//*[@id=\"cookie_consent\"]/button";
+	private static String CURRENCY_DROPDOWN_OPTIONS_XPATH = "//*[@id=\"currency\"]/li/a";
 	
 	private static String TEXT_INPUT = "Sweden";
 	private static String LOGIN_PHONE = "702808112";
 	private static String LOGIN_PASSWORD = "2667";
 	
+	List<String> currency = Arrays.asList("EUR", "USD", "PLN","AUD","GBP");
+	
 	@Test
 	public void openRebtelPage() {
 		driver.navigate().to(URL);
 		
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(COOKIE_CONSENT_BUTTON_XPATH)));
+		setCurrency(currency.get(0));				
+		
 		// Wait for search input box to be ready
-		WebDriverWait wait = new WebDriverWait(driver, 10);
 		wait.until(ExpectedConditions.visibilityOfElementLocated(By.id(SEARCH_INPUT_FIELD_ID)));
 		
 		// Get search input box
@@ -106,7 +116,27 @@ public class RebtelWebTests extends TestBase {
 		
 		String priceInCartPageAfterLogin = getPrice(priceElementCartPage.getText());
 		
-		assertEquals(priceInCartPage, priceInCartPageAfterLogin);
+		assertEquals(priceInCartPage, priceInCartPageAfterLogin); 
+	}
+	
+	public void setCurrency(String currencyCode) {
+		
+		driver.findElement(By.tagName("body")).sendKeys(Keys.PAGE_DOWN);
+		
+		wait.until(ExpectedConditions.elementToBeClickable(By.xpath(COOKIE_CONSENT_BUTTON_XPATH)));
+		WebElement cookiePolicyCloseButton = driver.findElement(By.xpath(COOKIE_CONSENT_BUTTON_XPATH));
+		cookiePolicyCloseButton.click();
+		
+		WebElement currencyDropdown = driver.findElement(By.id(CURRENCY_DROPDOWN_ID));
+		currencyDropdown.click();
+		
+		List<WebElement> options = currencyDropdown.findElements(By.xpath(CURRENCY_DROPDOWN_OPTIONS_XPATH));
+		for (WebElement option : options) {
+		    if (option.getText().equals(currencyCode)) {
+		        option.click();
+		        break;
+		    }
+		}
 	}
 	
 	public String getPrice(String priceString) {
