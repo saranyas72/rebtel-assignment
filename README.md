@@ -15,11 +15,11 @@ Tests to automate the flow - Offer 'Unlimited' package for a week to the new use
     1. Clone the repository
     2. To run the project in IDE 
     
-      . open the IDE
-      . create a new java project
-      . file import -> select existing project into workspace
-      . select src/test/testscripts/RebtelWebTests.java and set run configurations to run as JUnit Test
-      . run RebtelWebTests.java 
+      - open the IDE
+      - create a new java project
+      - file import -> select existing project into workspace
+      - select src/test/testscripts/RebtelWebTests.java and set run configurations to run as JUnit Test
+      - run RebtelWebTests.java 
       
       [Note: Re-run if required]
       
