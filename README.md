@@ -21,7 +21,7 @@ Sample test for Rebtel
       - create a new java project
       - file import -> select existing project into workspace
       - select src/test/testscripts/RebtelWebTests.java and set run configurations to run as JUnit Test
-      - run rebtel-assignment.java 
+      - run RebtelWebTests.java 
       
       [Note: Re-run if required]
       
