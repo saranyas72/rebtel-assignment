@@ -1,9 +1,9 @@
 # rebtel-assignment
-Sample test for rebtel
+Sample test for Rebtel
 
 ## Test flow that is automated
 
-    - Go to the page www.rebtel.com;
+    - Go to the page www.rebtel.com
     - Makes a search for Sweden on the Rate search box
     - Checks that the Product "Sweden Unlimited" is showing on the result
     - Clicks in "Try one week free"
