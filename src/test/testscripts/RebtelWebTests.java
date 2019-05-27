@@ -7,7 +7,7 @@
 //  Execution Time : 56.779 s (avg)
 //////////////////////////////////////////////////////////////////////////////
 
-package rebteltests;
+package testscripts;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -174,8 +174,7 @@ public class RebtelWebTests extends TestBase {
 		// Get price element
 		WebElement priceElementCartPage = driver.findElement(By.xpath(OR.CART_PRODUCT_PRICE_XPATH));
 
-		// Get amount value without the currency code and return. Eg. $25 will return
-		// 25.
+		// Get amount value without the currency code and return. Eg. $25.50 will return 25.50
 		return getAmount(priceElementCartPage.getText());
 	}
 
