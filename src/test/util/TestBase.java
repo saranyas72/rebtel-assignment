@@ -1,4 +1,14 @@
-package rebtel;
+/////////////////////////////////////////////////////////////////////////////////
+//
+//  FILE
+//  TestBase.java
+//
+//  Author  : Saranya Seetharaman
+//  Date  : May 26, 2019
+//  Description : Base class for Rebtel test - Contains initial setup functions
+//
+//////////////////////////////////////////////////////////////////////////////////
+package util;
 
 import org.junit.After;
 import org.junit.Before;
@@ -41,6 +51,7 @@ public class TestBase {
 	  * Returns the browser version
 	  * @return
 	  */
+	
 	public String getBrowserVersion()
 	{
 	    return ((RemoteWebDriver)driver).getCapabilities().getVersion();
@@ -50,6 +61,7 @@ public class TestBase {
 	  * Returns the browser name
 	  * @return
 	  */
+	
 	public String getBrowserName()
 	{
 	    return ((RemoteWebDriver)driver).getCapabilities().getBrowserName();
